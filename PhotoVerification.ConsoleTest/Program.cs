@@ -1,20 +1,52 @@
-﻿using MetadataExtractor;
-using MetadataExtractor.Formats.Xmp;
+﻿
+using PhotoVerification.Library;
 
 var imagePath = @"E:\_2023-08-18_13-43-32.jpg";
 
-var directories = ImageMetadataReader.ReadMetadata(imagePath);
-foreach (var directory in directories)
-    foreach (var tag in directory.Tags)
-        Console.WriteLine($"{directory.Name} - {tag.Name} = {tag.Description}");
+var builder = new VerificationResultBuilder(imagePath);
+var result = builder
+    .VerificationCameraMake()
+    .VerificationExifSoftware()
+    .VerificationXmpHistorySoftwareAgent()
+    .GetResult();
 
-
-var dir = directories.OfType<XmpDirectory>().FirstOrDefault();
-if (dir is not null)
+if (result.CameraMake is null)
 {
-    var descriptor = dir.GetXmpProperties();
-    foreach (var item in descriptor)
+    Console.WriteLine("[EXIF] Отсутствует информация о камере");
+}
+else
+{
+    Console.WriteLine(result.CameraMake.Exist == false
+        ? "[EXIF] Отсутствует информация о камере"
+        : $"[EXIF] Камера - {result.CameraMake.Value}");
+}
+
+if (result.ExifSoftware is null)
+{
+    Console.WriteLine("[EXIF] Отсутствует информация о приложении");
+}
+else
+{
+    Console.WriteLine(result.CameraMake.Exist == false
+        ? "[EXIF] Отсутствует информация о приложении"
+        : $"[EXIF] Приложение - {result.ExifSoftware.Value}");
+}
+
+if (result.XmpHistorySoftwareAgent is null)
+{
+    Console.WriteLine("[XMP] Отсутствует информация об истории приложений");
+}
+else
+{
+    if (result.XmpHistorySoftwareAgent.Count == 0)
     {
-        Console.WriteLine($"{item.Key} - {item.Value}");
+        Console.WriteLine("[XMP] Отсутствует информация об истории приложений");
+    }
+    else
+    {
+        foreach (var soft in result.XmpHistorySoftwareAgent)
+        {
+            Console.WriteLine($"[XMP] Приложение - {soft}");
+        }
     }
 }
