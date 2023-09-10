@@ -2,6 +2,6 @@
 
 public class VerificationItem
 {
-    public bool? Exist { get; set; }
-    public string? Value { get; set; }
+    public bool? Exist { get; init; }
+    public string? Value { get; init; }
 }
