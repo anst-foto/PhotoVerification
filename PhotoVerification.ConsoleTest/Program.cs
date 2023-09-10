@@ -1,5 +1,4 @@
-﻿
-using PhotoVerification.Library;
+﻿using PhotoVerification.Library;
 
 var imagePath = @"E:\_2023-08-18_13-43-32.jpg";
 

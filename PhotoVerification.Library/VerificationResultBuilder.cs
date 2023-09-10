@@ -23,17 +23,10 @@ public class VerificationResultBuilder
 
         if (tag is null)
         {
-            return new VerificationItem
-            {
-                Exist = false
-            };
+            return new VerificationItem { Exist = false };
         }
 
-        return new VerificationItem
-        {
-            Exist = true,
-            Value = tag
-        };
+        return new VerificationItem { Exist = true, Value = tag };
     }
 
     public VerificationResultBuilder VerificationCameraMake()
